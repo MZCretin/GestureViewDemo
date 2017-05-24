@@ -18,6 +18,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.cretin.secondtest.R;
 
@@ -79,8 +80,8 @@ public class GestureView extends View {
         public void handleMessage(Message msg) {
             leftTime--;
             Log.e("HHHHHHHH", "lefttime" + leftTime);
-            if (leftTime == 0) {
-                if (mTimer != null)
+            if ( leftTime == 0 ) {
+                if ( mTimer != null )
                     mTimerTask.cancel();
                 mTimeout = false;
                 message = "请绘制手势";
@@ -111,7 +112,7 @@ public class GestureView extends View {
         init(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi( Build.VERSION_CODES.LOLLIPOP )
     public GestureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -121,8 +122,8 @@ public class GestureView extends View {
         mContext = context;
 
         try {
-            gestureCallBack = (GestureCallBack) context;
-        } catch (final ClassCastException e) {
+            gestureCallBack = ( GestureCallBack ) context;
+        } catch ( final ClassCastException e ) {
             throw new ClassCastException(context.toString() + " must implement GestureCallBack");
         }
 
@@ -132,7 +133,7 @@ public class GestureView extends View {
         mPaint.setDither(true);
         mPaint.setStrokeWidth(20);
         mPaint.setStyle(Paint.Style.STROKE);
-        setBackgroundResource(R.mipmap.bg_gesture);
+        setBackgroundColor(Color.parseColor("#349B23"));
         listDatas = new ArrayList<>();
         listDatasCopy = new ArrayList<>();
 
@@ -142,10 +143,10 @@ public class GestureView extends View {
         unSelectedBitmapSmall = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_finger_unselected);
 
         //获取振动器
-        vibrate = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        vibrate = ( Vibrator ) context.getSystemService(Service.VIBRATOR_SERVICE);
         mTimer = new Timer();
         stateFlag = getState();
-        if (stateFlag == STATE_REGISTER) {
+        if ( stateFlag == STATE_REGISTER ) {
             message = "请设置手势密码";
         } else {
             message = "请输入手势密码以解锁";
@@ -171,9 +172,9 @@ public class GestureView extends View {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
         int width = Math.min(widthSize, heightSize);
-        if (widthMode == MeasureSpec.UNSPECIFIED) {
+        if ( widthMode == MeasureSpec.UNSPECIFIED ) {
             width = heightSize;
-        } else if (heightMode == MeasureSpec.UNSPECIFIED) {
+        } else if ( heightMode == MeasureSpec.UNSPECIFIED ) {
             width = widthSize;
         }
 
@@ -186,12 +187,12 @@ public class GestureView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mPanelWidth = Math.min(w, h);
 
-        pieceWidth = (int) (mLineHeight * 0.6f);
-        pieceWidthSmall = (int) (mLineHeight * 0.15f);
-        selectedBitmap = Bitmap.createScaledBitmap(selectedBitmap, (int) pieceWidth, (int) pieceWidth, false);
-        unSelectedBitmap = Bitmap.createScaledBitmap(unSelectedBitmap, (int) pieceWidth, (int) pieceWidth, false);
-        selectedBitmapSmall = Bitmap.createScaledBitmap(selectedBitmap, (int) pieceWidthSmall, (int) pieceWidthSmall, false);
-        unSelectedBitmapSmall = Bitmap.createScaledBitmap(unSelectedBitmap, (int) pieceWidthSmall, (int) pieceWidthSmall, false);
+        pieceWidth = ( int ) (mLineHeight * 0.6f);
+        pieceWidthSmall = ( int ) (mLineHeight * 0.15f);
+        selectedBitmap = Bitmap.createScaledBitmap(selectedBitmap, ( int ) pieceWidth, ( int ) pieceWidth, false);
+        unSelectedBitmap = Bitmap.createScaledBitmap(unSelectedBitmap, ( int ) pieceWidth, ( int ) pieceWidth, false);
+        selectedBitmapSmall = Bitmap.createScaledBitmap(selectedBitmap, ( int ) pieceWidthSmall, ( int ) pieceWidthSmall, false);
+        unSelectedBitmapSmall = Bitmap.createScaledBitmap(unSelectedBitmap, ( int ) pieceWidthSmall, ( int ) pieceWidthSmall, false);
     }
 
     private boolean saveState() {
@@ -222,30 +223,30 @@ public class GestureView extends View {
         GestureBean firstGestrue = null;
         GestureBean currGestrue = null;
 
-        if (stateFlag == STATE_REGISTER) {
+        if ( stateFlag == STATE_REGISTER ) {
             //绘制上面的提示点
             drawTipsPoint(canvas);
         } else {
             drawTipsText(canvas);
         }
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                canvas.drawBitmap(unSelectedBitmap, (float) (mLineHeight * (j + 0.5) - pieceWidth / 2), (float) (mLineHeight * (i + 0.5) - pieceWidth / 2 + panelHeight), mPaint);
+        for ( int i = 0; i < 3; i++ ) {
+            for ( int j = 0; j < 3; j++ ) {
+                canvas.drawBitmap(unSelectedBitmap, ( float ) (mLineHeight * (j + 0.5) - pieceWidth / 2), ( float ) (mLineHeight * (i + 0.5) - pieceWidth / 2 + panelHeight), mPaint);
             }
         }
-        if (!listDatas.isEmpty()) {
+        if ( !listDatas.isEmpty() ) {
             firstGestrue = listDatas.get(0);
-            for (int i = 1; i < listDatas.size(); i++) {
+            for ( int i = 1; i < listDatas.size(); i++ ) {
                 currGestrue = listDatas.get(i);
-                canvas.drawLine((float) (mLineHeight * (firstGestrue.getX() + 0.5)), (float) (mLineHeight * (firstGestrue.getY() + 0.5) + panelHeight), (float) (mLineHeight * (currGestrue.getX() + 0.5)), (float) (mLineHeight * (currGestrue.getY() + 0.5) + panelHeight), mPaint);
+                canvas.drawLine(( float ) (mLineHeight * (firstGestrue.getX() + 0.5)), ( float ) (mLineHeight * (firstGestrue.getY() + 0.5) + panelHeight), ( float ) (mLineHeight * (currGestrue.getX() + 0.5)), ( float ) (mLineHeight * (currGestrue.getY() + 0.5) + panelHeight), mPaint);
                 firstGestrue = currGestrue;
             }
 
             lastGestrue = listDatas.get(listDatas.size() - 1);
-            canvas.drawLine((float) (mLineHeight * (lastGestrue.getX() + 0.5)), (float) (mLineHeight * (lastGestrue.getY() + 0.5) + panelHeight), currX, currY, mPaint);
-            for (GestureBean bean : listDatas) {
-                canvas.drawBitmap(selectedBitmap, (float) (mLineHeight * (bean.getX() + 0.5) - pieceWidth / 2), (float) (mLineHeight * (bean.getY() + 0.5) + panelHeight - pieceWidth / 2), mPaint);
+            canvas.drawLine(( float ) (mLineHeight * (lastGestrue.getX() + 0.5)), ( float ) (mLineHeight * (lastGestrue.getY() + 0.5) + panelHeight), currX, currY, mPaint);
+            for ( GestureBean bean : listDatas ) {
+                canvas.drawBitmap(selectedBitmap, ( float ) (mLineHeight * (bean.getX() + 0.5) - pieceWidth / 2), ( float ) (mLineHeight * (bean.getY() + 0.5) + panelHeight - pieceWidth / 2), mPaint);
             }
         }
     }
@@ -256,15 +257,15 @@ public class GestureView extends View {
         mPaint.setStrokeWidth(2);
         mPaint.setStyle(Paint.Style.FILL);
         //设置文字的大小
-        mPaint.setTextSize(50);
-        int widthStr1 = (int) mPaint.measureText(message);
-        if (mError) {
+        mPaint.setTextSize(24 * getScale());
+        int widthStr1 = ( int ) mPaint.measureText(message);
+        if ( mError ) {
             mPaint.setColor(Color.parseColor("#FF0000"));
         } else {
             mPaint.setColor(Color.parseColor("#FFFFFF"));
         }
         float baseX = widthMiddleX - widthStr1 / 2;
-        float baseY = panelHeight / 2 + 50;
+        float baseY = panelHeight / 2 + 24 * getScale();
         Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
         float fontTotalHeight = fontMetrics.bottom - fontMetrics.top;
         float offY = fontTotalHeight / 2 - fontMetrics.bottom - 30;
@@ -276,15 +277,21 @@ public class GestureView extends View {
         mPaint.setStrokeWidth(20);
     }
 
+    private float getScale() {
+        TextView tv = new TextView(mContext);
+        tv.setTextSize(1);
+        return tv.getTextSize();
+    }
+
     private void drawMessage(Canvas canvas, String message, boolean errorFlag) {
         float widthMiddleX = mPanelWidth / 2;
-        float firstY = (float) (panelHeight / 2 - pieceWidthSmall / 2 + pieceWidthSmall * 1.25 + 90);
+        float firstY = ( float ) (panelHeight / 2 - pieceWidthSmall / 2 + pieceWidthSmall * 1.25 + 90);
         mPaint.setStrokeWidth(2);
         mPaint.setStyle(Paint.Style.FILL);
         //设置文字的大小
-        mPaint.setTextSize(50);
-        int widthStr1 = (int) mPaint.measureText(message);
-        if (errorFlag) {
+        mPaint.setTextSize(24 * getScale());
+        int widthStr1 = ( int ) mPaint.measureText(message);
+        if ( errorFlag ) {
             mPaint.setColor(Color.parseColor("#FF0000"));
         } else {
             mPaint.setColor(Color.parseColor("#FFFFFF"));
@@ -307,19 +314,19 @@ public class GestureView extends View {
         float widthMiddleX = mPanelWidth / 2;
         float firstX = widthMiddleX - pieceWidthSmall / 4 - pieceWidthSmall / 2 - pieceWidthSmall;
         float firstY = panelHeight / 2 - pieceWidthSmall / 2 - pieceWidthSmall - pieceWidthSmall / 4 - 10;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                canvas.drawBitmap(unSelectedBitmapSmall, (float) (firstX + j * (pieceWidthSmall * 1.25)), (float) (firstY + i * (pieceWidthSmall * 1.25)), mPaint);
+        for ( int i = 0; i < 3; i++ ) {
+            for ( int j = 0; j < 3; j++ ) {
+                canvas.drawBitmap(unSelectedBitmapSmall, ( float ) (firstX + j * (pieceWidthSmall * 1.25)), ( float ) (firstY + i * (pieceWidthSmall * 1.25)), mPaint);
             }
         }
 
-        if (listDatasCopy != null && !listDatasCopy.isEmpty()) {
-            for (GestureBean bean : listDatasCopy) {
-                canvas.drawBitmap(selectedBitmapSmall, (float) (firstX + bean.getX() * (pieceWidthSmall * 1.25)), (float) (firstY + bean.getY() * (pieceWidthSmall * 1.25)), mPaint);
+        if ( listDatasCopy != null && !listDatasCopy.isEmpty() ) {
+            for ( GestureBean bean : listDatasCopy ) {
+                canvas.drawBitmap(selectedBitmapSmall, ( float ) (firstX + bean.getX() * (pieceWidthSmall * 1.25)), ( float ) (firstY + bean.getY() * (pieceWidthSmall * 1.25)), mPaint);
             }
-        } else if (listDatas != null && !listDatas.isEmpty()) {
-            for (GestureBean bean : listDatas) {
-                canvas.drawBitmap(selectedBitmapSmall, (float) (firstX + bean.getX() * (pieceWidthSmall * 1.25)), (float) (firstY + bean.getY() * (pieceWidthSmall * 1.25)), mPaint);
+        } else if ( listDatas != null && !listDatas.isEmpty() ) {
+            for ( GestureBean bean : listDatas ) {
+                canvas.drawBitmap(selectedBitmapSmall, ( float ) (firstX + bean.getX() * (pieceWidthSmall * 1.25)), ( float ) (firstY + bean.getY() * (pieceWidthSmall * 1.25)), mPaint);
             }
         }
 
@@ -328,21 +335,21 @@ public class GestureView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mTimeout) {
+        if ( mTimeout ) {
             return true;
         }
-        if (event.getY() >= 0) {
-            int x = (int) ((event.getY() - panelHeight) / mLineHeight);
-            int y = (int) (event.getX() / mLineHeight);
+        if ( event.getY() >= 0 ) {
+            int x = ( int ) ((event.getY() - panelHeight) / mLineHeight);
+            int y = ( int ) (event.getX() / mLineHeight);
             currX = event.getX();
             currY = event.getY();
-            switch (event.getAction()) {
+            switch ( event.getAction() ) {
                 case MotionEvent.ACTION_DOWN:
                     lastGestrue = null;
-                    if (currX >= 0 && currX <= mPanelWidth && currY >= panelHeight && currY <= panelHeight + mPanelWidth) {
-                        if (currY <= (x + 0.5) * mLineHeight + pieceWidth / 2 + panelHeight && currY >= (x + 0.5) * mLineHeight - pieceWidth / 2 + panelHeight &&
-                                currX <= (y + 0.5) * mLineHeight + pieceWidth / 2 && currX >= (y + 0.5) * mLineHeight - pieceWidth / 2) {
-                            if (!listDatas.contains(new GestureBean(y, x))) {
+                    if ( currX >= 0 && currX <= mPanelWidth && currY >= panelHeight && currY <= panelHeight + mPanelWidth ) {
+                        if ( currY <= (x + 0.5) * mLineHeight + pieceWidth / 2 + panelHeight && currY >= (x + 0.5) * mLineHeight - pieceWidth / 2 + panelHeight &&
+                                currX <= (y + 0.5) * mLineHeight + pieceWidth / 2 && currX >= (y + 0.5) * mLineHeight - pieceWidth / 2 ) {
+                            if ( !listDatas.contains(new GestureBean(y, x)) ) {
                                 listDatas.add(new GestureBean(y, x));
                                 vibrate.vibrate(50);//震半秒钟
                             }
@@ -351,11 +358,11 @@ public class GestureView extends View {
                     invalidate();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (currX >= 0 && currX <= mPanelWidth && currY >= panelHeight && currY <= panelHeight + mPanelWidth) {
+                    if ( currX >= 0 && currX <= mPanelWidth && currY >= panelHeight && currY <= panelHeight + mPanelWidth ) {
                         //缩小响应范围 在此处需要注意的是 x跟currX在物理方向上是反的哦
-                        if (currY <= (x + 0.5) * mLineHeight + pieceWidth / 2 + panelHeight && currY >= (x + 0.5) * mLineHeight - pieceWidth / 2 + panelHeight &&
-                                currX <= (y + 0.5) * mLineHeight + pieceWidth / 2 && currX >= (y + 0.5) * mLineHeight - pieceWidth / 2) {
-                            if (!listDatas.contains(new GestureBean(y, x))) {
+                        if ( currY <= (x + 0.5) * mLineHeight + pieceWidth / 2 + panelHeight && currY >= (x + 0.5) * mLineHeight - pieceWidth / 2 + panelHeight &&
+                                currX <= (y + 0.5) * mLineHeight + pieceWidth / 2 && currX >= (y + 0.5) * mLineHeight - pieceWidth / 2 ) {
+                            if ( !listDatas.contains(new GestureBean(y, x)) ) {
                                 listDatas.add(new GestureBean(y, x));
                                 vibrate.vibrate(50);//震半秒钟
                             }
@@ -364,12 +371,12 @@ public class GestureView extends View {
                     invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (lastGestrue != null) {
-                        currX = (float) ((lastGestrue.getX() + 0.5) * mLineHeight);
-                        currY = (float) ((lastGestrue.getY() + 0.5) * mLineHeight);
+                    if ( lastGestrue != null ) {
+                        currX = ( float ) ((lastGestrue.getX() + 0.5) * mLineHeight);
+                        currY = ( float ) ((lastGestrue.getY() + 0.5) * mLineHeight);
                     }
-                    if (stateFlag == STATE_LOGIN) {
-                        if (listDatas.equals(loadSharedPrefferenceData())) {
+                    if ( stateFlag == STATE_LOGIN ) {
+                        if ( listDatas.equals(loadSharedPrefferenceData()) ) {
                             mError = false;
                             message = "手势验证成功";
                             postListener(true);
@@ -377,7 +384,7 @@ public class GestureView extends View {
                             listDatas.clear();
                             return true;
                         } else {
-                            if (--tempCount == 0) {
+                            if ( --tempCount == 0 ) {
                                 mError = true;
                                 message = "尝试次数达到最大,30s后重试";
                                 mTimeout = true;
@@ -391,9 +398,9 @@ public class GestureView extends View {
                             message = "手势错误,还可以再输入" + (tempCount) + "次";
                             listDatas.clear();
                         }
-                    } else if (stateFlag == STATE_REGISTER) {
-                        if (listDatasCopy == null || listDatasCopy.isEmpty()) {
-                            if (listDatas.size() < minPointNums) {
+                    } else if ( stateFlag == STATE_REGISTER ) {
+                        if ( listDatasCopy == null || listDatasCopy.isEmpty() ) {
+                            if ( listDatas.size() < minPointNums ) {
                                 listDatas.clear();
                                 mError = true;
                                 message = "点数不能小于" + minPointNums + "个";
@@ -407,7 +414,7 @@ public class GestureView extends View {
                             message = "请再一次绘制";
                         } else {
                             loadSharedPrefferenceData();
-                            if (listDatas.equals(listDatasCopy)) {
+                            if ( listDatas.equals(listDatasCopy) ) {
                                 mError = false;
                                 message = "手势设置成功";
                                 stateFlag = STATE_LOGIN;
@@ -432,7 +439,7 @@ public class GestureView extends View {
 
     //给接口传递数据
     private void postListener(boolean success) {
-        if (gestureCallBack != null) {
+        if ( gestureCallBack != null ) {
             gestureCallBack.gestureVerifySuccessListener(stateFlag, listDatas, message, success);
         }
     }
@@ -441,7 +448,7 @@ public class GestureView extends View {
         SharedPreferences sp = mContext.getSharedPreferences("GESTURAE_DATA", Activity.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
         edit.putInt("data_size", data.size()); /*sKey is an array*/
-        for (int i = 0; i < data.size(); i++) {
+        for ( int i = 0; i < data.size(); i++ ) {
             edit.remove("data_" + i);
             edit.putString("data_" + i, data.get(i).getX() + " " + data.get(i).getY());
         }
@@ -454,7 +461,7 @@ public class GestureView extends View {
         SharedPreferences mSharedPreference = mContext.getSharedPreferences("GESTURAE_DATA", Activity.MODE_PRIVATE);
         int size = mSharedPreference.getInt("data_size", 0);
 
-        for (int i = 0; i < size; i++) {
+        for ( int i = 0; i < size; i++ ) {
             String str = mSharedPreference.getString("data_" + i, "0 0");
             list.add(new GestureBean(Integer.parseInt(str.split(" ")[0]), Integer.parseInt(str.split(" ")[1])));
         }
@@ -510,7 +517,7 @@ public class GestureView extends View {
 
         @Override
         public boolean equals(Object o) {
-            return ((GestureBean) o).getX() == x && ((GestureBean) o).getY() == y;
+            return (( GestureBean ) o).getX() == x && (( GestureBean ) o).getY() == y;
         }
     }
 
@@ -519,9 +526,9 @@ public class GestureView extends View {
     }
 
     public void setMinPointNums(int minPointNums) {
-        if (minPointNums <= 3)
+        if ( minPointNums <= 3 )
             this.minPointNums = 3;
-        if (minPointNums >= 9)
+        if ( minPointNums >= 9 )
             this.minPointNums = 9;
     }
 

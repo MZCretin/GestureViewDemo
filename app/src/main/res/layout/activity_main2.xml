@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    tools:context="com.example.cretin.secondtest.MainActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#349B23"
+                tools:context="com.example.cretin.secondtest.MainActivity">
 
 
     <com.example.cretin.secondtest.views.GestureView
         android:id="@+id/gesture1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -19,5 +19,5 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="验证手势界面"
-        android:textColor="#00FF00" />
+        android:textColor="#00FF00"/>
 </RelativeLayout>
